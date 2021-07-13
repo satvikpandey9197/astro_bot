@@ -8,7 +8,10 @@ module.exports = {
     aliases: ['add-donation'],
     description: "Allows you to add donations",
     run: async (client, message, args) => {
-        if(!message.member.hasPermission("MANAGE_SERVER")) return;
+            if(!message.member.hasPermission('MANAGE_SERVER') && !message.member.roles.cache.some((r) => r.name === "Moderator")){
+        return message.channel.send(' You need to have the `MANAGE_SERVER`Permissions or `Moderator` role to start giveaways.');
+    }
+
         const user = message.mentions.members.first() || message.guild.members.cache.get(args[0])
         if(!user) return message.channel.send('User not found.')
         let newdonation = Math.round(parseFloat(args[1]));
